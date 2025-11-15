@@ -38,6 +38,8 @@ public class Cliente {
     @Size(max = 255, message = "La dirección no debe exceder los 255 caracteres.")
     private String direccion;
     
-    // (Faltaría el campo de Email, crucial para el login o contacto)
-    
+    @Column(nullable = false, length = 50)
+    @NotBlank(message = "El email no puede estar vacío.")
+    @Size(min = 2, max = 50, message = "El email debe tener entre 2 y 50 caracteres.")
+    private String email;
 }

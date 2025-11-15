@@ -1,0 +1,44 @@
+package com.Heladeria.Backend.model;
+import java.util.Set;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name="cuentas", uniqueConstraints = @UniqueConstraint(columnNames = "usuario"))
+@Data // Sustituye getters y setters
+@NoArgsConstructor // Sustituye el constructor vacio
+public class Cuenta {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "El nombre de usuario no puede estar vacio")
+    @Column(name = "usuario", nullable = false, unique = true, length = 100)
+    private String usuario; // Usado como Email/Username
+
+    @NotBlank(message = "La contraseña no puede estar vacia")
+    @Column(nullable = false, length = 255) // Longitud necesaria para el hash de BCrypt
+    private String contrasena; // El atributo debe coincidir con el getter/setter si no usas Lombok
+
+    @ElementCollection(fetch = FetchType.EAGER) // Cargar roles inmediatamente
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "cuenta_roles", joinColumns = @JoinColumn(name = "cuenta_id"))
+    private Set<Rol> roles; // Requiere la existencia de la clase enum Rol.java
+    
+}
