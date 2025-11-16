@@ -41,7 +41,7 @@ public class ClienteImpl implements ClienteService { // Nombre de clase corregid
         cuenta.setUsuario(registroDTO.getUsuario());
         // CRÍTICO: Cifrar la contraseña
         cuenta.setContrasena(passwordEncoder.encode(registroDTO.getContrasena())); 
-        cuenta.setRoles(java.util.Set.of(Rol.CLIENTE));
+        cuenta.setRol(Rol.CLIENTE);
         
         // --- 2. Crear la entidad Cliente y vincular la Cuenta ---
         Cliente cliente = mapToEntity(registroDTO);

@@ -1,6 +1,4 @@
 package com.Heladeria.Backend.model;
-import java.util.Set;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -39,7 +37,7 @@ public class Cuenta {
     @ElementCollection(fetch = FetchType.EAGER) // Cargar roles inmediatamente
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "cuenta_roles", joinColumns = @JoinColumn(name = "cuenta_id"))
-    private Set<Rol> roles; // Requiere la existencia de la clase enum Rol.java
+    private Rol rol; // Requiere la existencia de la clase enum Rol.java
 
     public Long getId() {
         return id;
@@ -53,8 +51,8 @@ public class Cuenta {
         return contrasena;
     }
 
-    public Set<Rol> getRoles() {
-        return roles;
+    public Rol getRol() {
+        return rol;
     }
 
     public void setId(Long id) {
@@ -69,8 +67,8 @@ public class Cuenta {
         this.contrasena = contrasena;
     }
 
-    public void setRoles(Set<Rol> roles) {
-        this.roles = roles;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
     
    
