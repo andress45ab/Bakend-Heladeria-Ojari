@@ -40,5 +40,38 @@ public class Cuenta {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "cuenta_roles", joinColumns = @JoinColumn(name = "cuenta_id"))
     private Set<Rol> roles; // Requiere la existencia de la clase enum Rol.java
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public Set<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
+    }
     
+   
 }

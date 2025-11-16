@@ -1,10 +1,14 @@
 package com.Heladeria.Backend.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column; // Importa todas las clases de JPA
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType; // Importa Data de Lombok
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -42,4 +46,67 @@ public class Cliente {
     @NotBlank(message = "El email no puede estar vacío.")
     @Size(min = 2, max = 50, message = "El email debe tener entre 2 y 50 caracteres.")
     private String email;
+
+    // Nueva Relación: Un empleado tiene una única cuenta de acceso (usuario, contraseña, roles).
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "cuenta_id", referencedColumnName = "id")
+    private Cuenta cuenta;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    } 
+   
+    
 }

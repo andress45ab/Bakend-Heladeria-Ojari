@@ -35,5 +35,6 @@ public class Empleado {
     @JoinColumn(name = "cuenta_id", referencedColumnName = "id")
     private Cuenta cuenta; 
     
-    // Podrías añadir otros campos como 'puesto', 'salario', etc., si son necesarios para el negocio.
+    
+    // ---------------------------------------------
 }
