@@ -1,17 +1,19 @@
 package com.Heladeria.Backend.Controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping; // Importar la anotación para validación
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping; // Importar HttpStatus
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.Heladeria.Backend.DTO.ClienteResponse;
 import com.Heladeria.Backend.Service.ClienteService;
 import com.Heladeria.Backend.model.Cliente;
@@ -54,5 +56,17 @@ public class ClienteController {
     public ResponseEntity<List<ClienteResponse>> obtenerTodosClientes() {
         List<ClienteResponse> clientes = clienteService.obtenerTodosClientes();
         return ResponseEntity.ok(clientes);
+    }
+
+    // Endpoint: DELETE /api/clientes
+    // El cliente solo puede eliminar su propia cuenta (se valida con el token JWT)
+    @DeleteMapping
+    @PreAuthorize("hasRole('USER')") // Solo usuarios logueados pueden hacer esto
+    public ResponseEntity<String> eliminarCuenta(Principal principal) {
+        // 'principal.getName()' es el email del usuario logueado gracias al JWT
+        String emailUsuario = principal.getName();
+        // Lógica: llama al servicio para eliminar el usuario por su email
+        // usuarioService.eliminarUsuario(emailUsuario); 
+        return ResponseEntity.ok("Cuenta de " + emailUsuario + " eliminada exitosamente.");
     }
 }

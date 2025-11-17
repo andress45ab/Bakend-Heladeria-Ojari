@@ -1,16 +1,19 @@
 package com.Heladeria.Backend.Controller;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page; // Tu paquete
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping; // Usamos Page
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,4 +95,18 @@ public class PedidoController {
         List<PedidoResponse> pedidos = pedidoService.obtenerPedidosPorEstado(estado);
         return ResponseEntity.ok(pedidos);
     }
+
+    // Endpoint: PUT /api/ordenes/{id}/cancelar
+// El cliente solo puede cancelar órdenes propias (Validar en el servicio)
+@PutMapping("/{id}/cancelar")
+@PreAuthorize(("hasAuthority('CLIENTE')")) // Solo usuarios logueados pueden cancelar
+public ResponseEntity<String> cancelarOrden(@PathVariable Long id, Principal principal) {
+    String Usuario = principal.getName();
+    // Lógica:
+    // 1. Buscar la orden por 'id'.
+    // 2. Verificar que 'orden.getClienteEmail()' == 'emailUsuario' (Seguridad).
+    // 3. Cambiar el estado de la orden a "Cancelada".
+    // ordenService.cancelarOrden(id, emailUsuario);
+    return ResponseEntity.ok("Orden " + id + " cancelada con éxito.");
+}
 }

@@ -15,4 +15,5 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
     // Verificar si ya existe un usuario (útil al registrar)
     boolean existsByUsuario(String usuario);
+
 }
