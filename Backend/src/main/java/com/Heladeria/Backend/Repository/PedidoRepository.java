@@ -29,15 +29,15 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     // Rango por fecha para reportes
     List<Pedido> findByFechaPedidoBetween(LocalDateTime inicio, LocalDateTime fin);
 
-    // Detalle de un pedido cargando recibos (detalles) y productos con FETCH JOIN
-    @Query("""
-            select p
-            from Pedido p
-            left join fetch p.recibos r  /* Usando 'recibos' por tu código original */
-            left join fetch r.producto prod
-            where p.id = :id
-            """)
-    Optional<Pedido> findDetalleById(@Param("id") Long id);
+    // Detalle de un pedido cargando detalles (ítems) y productos con FETCH JOIN
+@Query("""
+    select p
+    from Pedido p
+    left join fetch p.detalles d 
+    left join fetch d.producto prod
+    where p.id = :id
+    """)
+Optional<Pedido> findDetalleById(@Param("id") Long id);
     
     // Opcional: obtener todos los pedidos paginados por estado (útil para el admin dashboard)
     Page<Pedido> findByEstadoOrderByFechaPedidoAsc(Estado estado, Pageable pageable);

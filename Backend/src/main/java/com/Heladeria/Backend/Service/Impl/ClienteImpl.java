@@ -96,4 +96,11 @@ public class ClienteImpl implements ClienteService { // Nombre de clase corregid
             cliente.getCuenta() != null ? cliente.getCuenta().getUsuario() : null
         );
     }
+
+    @Override // Esto ayuda a verificar que coincida con la interfaz
+    public Cliente save(Cliente cliente) {
+        // Implementación de la lógica para hashear la contraseña y guardar en el repositorio
+        // ...
+        return clienteRepository.save(cliente); 
+    }
 }

@@ -1,15 +1,11 @@
 package com.Heladeria.Backend.model;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -34,10 +30,9 @@ public class Cuenta {
     @Column(nullable = false, length = 255) // Longitud necesaria para el hash de BCrypt
     private String contrasena; // El atributo debe coincidir con el getter/setter si no usas Lombok
 
-    @ElementCollection(fetch = FetchType.EAGER) // Cargar roles inmediatamente
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "cuenta_roles", joinColumns = @JoinColumn(name = "cuenta_id"))
-    private Rol rol; // Requiere la existencia de la clase enum Rol.java
+     @Column(name = "rol", nullable = false)
+     private Rol rol; // <-- Tipo Rol (un solo valor)
 
     public Long getId() {
         return id;

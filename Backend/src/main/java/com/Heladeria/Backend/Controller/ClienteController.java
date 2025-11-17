@@ -1,21 +1,20 @@
 package com.Heladeria.Backend.Controller;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity; // Importar la anotación para validación
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // Importar HttpStatus
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping; // Importar la anotación para validación
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping; // Importar HttpStatus
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.Heladeria.Backend.DTO.ClienteRequest;
 import com.Heladeria.Backend.DTO.ClienteResponse;
 import com.Heladeria.Backend.Service.ClienteService;
+import com.Heladeria.Backend.model.Cliente;
 
 import jakarta.validation.Valid;
 
@@ -32,20 +31,13 @@ public class ClienteController {
     
     // --- 1. REGISTRO (POST) ---
     // Devolvemos 201 Created y la URL del nuevo recurso
-    @PostMapping("/registro")
-    public ResponseEntity<ClienteResponse> registrarCliente(@Valid @RequestBody ClienteRequest clienteRegistroDTO) {
-        // @Valid es CRUCIAL para que se disparen las validaciones del DTO
+   @PostMapping // El @RequestMapping base es "/api/clientes". Esta es la ruta POST /api/clientes
+    public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
+        // Lógica para guardar el cliente y hashear la contraseña
+        Cliente nuevoCliente = clienteService.save(cliente); 
         
-        ClienteResponse clienteResponse = clienteService.registrarCliente(clienteRegistroDTO);
-        
-        // Generar la URI del recurso creado (Mejor práctica HTTP: 201 Created)
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(clienteResponse.getId())
-                .toUri();
-                
-        return ResponseEntity.created(location).body(clienteResponse);
+        // Devolver 201 Created
+        return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED);
     }
     
     // --- 2. OBTENER POR ID (GET) ---

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.Heladeria.Backend.DTO.ClienteRequest;
 import com.Heladeria.Backend.DTO.ClienteResponse;
+import com.Heladeria.Backend.model.Cliente;
 
 public interface ClienteService {
 
@@ -29,4 +30,7 @@ public interface ClienteService {
      * @return Lista de ClienteResponseDTO.
      */
     List<ClienteResponse> obtenerTodosClientes();
+
+    // Asegúrate de que esta firma de método exista:
+    Cliente save(Cliente cliente);
 }
