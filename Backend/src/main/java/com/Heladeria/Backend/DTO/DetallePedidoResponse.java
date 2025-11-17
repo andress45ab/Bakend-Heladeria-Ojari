@@ -23,4 +23,32 @@ public class DetallePedidoResponse {
     private Integer cantidad;
     private BigDecimal precioUnit;
     private BigDecimal subtotal;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setProductoId(Long productoId) {
+        this.productoId = productoId;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public void setImagenProducto(String imagenProducto) {
+        this.imagenProducto = imagenProducto;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setPrecioUnit(BigDecimal precioUnit) {
+        this.precioUnit = precioUnit;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
 }

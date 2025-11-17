@@ -41,4 +41,20 @@ public class Producto {
 
     @Column(length = 800)
     private String imagenUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
 }

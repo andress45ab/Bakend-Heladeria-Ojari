@@ -42,4 +42,16 @@ public class EmpleadoRequest {
     // Rol (Necesario para la seguridad)
     @NotNull(message = "El rol del empleado es obligatorio")
     private Rol rol; 
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

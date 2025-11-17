@@ -11,49 +11,95 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor; // Incluye todos los getters, setters, equals, hashCode y toString
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Data
 @Entity
-@Table(name = "detalles_pedido") // Nombre de tabla estandarizado
-@Data // Genera getters, setters, etc.
-@NoArgsConstructor // Constructor vacío
-@AllArgsConstructor // Constructor con todos los campos
-public class DetallePedido { // Clase renombrada
+@Table(name = "detalles_pedido")
+@NoArgsConstructor
+@AllArgsConstructor
+public class DetallePedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relación al Pedido (ManyToOne)
     @NotNull(message = "El pedido no puede ser nulo")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    // Relación al Producto (ManyToOne)
     @NotNull(message = "El producto no puede ser nulo")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
-    // Cantidad
-    @Min(value = 1, message = "La cantidad minima es 1")
+    @Min(value = 1, message = "La cantidad mínima es 1")
     @Column(nullable = false)
     private int cantidad;
 
-    // Precio Unitario al momento de la venta (para historial)
-    @NotNull(message = "El precio no puede ser nulo")
+    @NotNull(message = "El precio unitario no puede ser nulo")
     @Column(name = "precio_unitario", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioUnit;
 
-    // Método que calcula el subtotal (NO es una columna en la DB)
-    @Transient 
-    public BigDecimal getSubtotal() {
-        return precioUnit.multiply(BigDecimal.valueOf(cantidad));
+    // --- CORRECCIÓN CRÍTICA ---
+    // El subtotal debe ser persistente (guardado) para asegurar la inmutabilidad de la orden.
+    @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
+    private BigDecimal subtotal;
+
+   public void setPedido(Pedido pedido) { 
+        this.pedido = pedido;
     }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setPrecioUnit(BigDecimal precioUnit) {
+        this.precioUnit = precioUnit;
+    }
+
+    //get precio unitario
+    public BigDecimal getPrecioUnit() {
+        return precioUnit;
+    }
+
+    //get Cantidad
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+    
+
+
 }

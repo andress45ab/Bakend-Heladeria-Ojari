@@ -30,4 +30,54 @@ public class EmpleadoResponse {
         this.usuario = usuario;
         this.rol = rol;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+    
+
 }

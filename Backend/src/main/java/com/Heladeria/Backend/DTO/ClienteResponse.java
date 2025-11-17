@@ -16,4 +16,7 @@ public class ClienteResponse {
     private String direccion;
     private String Usuario;
     // Opcional: private String usuario; // Para mostrar el email de login
+    public Long getId() {
+        return id;
+    }
 }

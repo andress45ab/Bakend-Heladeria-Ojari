@@ -19,4 +19,12 @@ public class PedidoRequest {
     @Valid
     @NotEmpty(message = "Debe haber al menos un producto en el pedido")
     private List<DetallePedidoRequest> items;
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public List<DetallePedidoRequest> getItems() {
+        return items;
+    }
 }

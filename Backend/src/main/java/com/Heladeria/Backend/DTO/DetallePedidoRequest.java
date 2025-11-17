@@ -15,4 +15,12 @@ public class DetallePedidoRequest {
 
     @Min(value = 1, message = "La cantidad mínima debe ser 1")
     private int cantidad;
+
+    public Long getProductoId() {
+        return productoId;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
 }

@@ -34,4 +34,28 @@ public class ClienteRequest {
     @NotBlank(message = "La contraseña no puede estar vacia")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasena; // Corregido a contrasena (camelCase)
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
 }
