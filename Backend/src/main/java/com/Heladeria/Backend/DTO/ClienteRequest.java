@@ -4,10 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data // Incluye getters, setters, y toString
+
 @NoArgsConstructor // Constructor vacio
 @AllArgsConstructor // Constructor lleno
 public class ClienteRequest {
@@ -57,5 +56,27 @@ public class ClienteRequest {
 
     public String getDireccion() {
         return direccion;
+    }
+
+    // ¡AGREGAR ESTO! Asegúrate de que este campo exista si tu entidad Cliente lo usa
+   @NotBlank(message = "El email no puede estar vacío.") 
+   @Email(message = "Debe ser un formato de correo válido")
+   private String email;
+
+   public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String rol; // Añadir si el JSON lo envía
+
+    public String getRol() {
+        return rol;
+    }
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

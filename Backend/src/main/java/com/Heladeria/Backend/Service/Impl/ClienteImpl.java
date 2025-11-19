@@ -33,27 +33,34 @@ public class ClienteImpl implements ClienteService { // Nombre de clase corregid
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
-    @Override
-    public ClienteResponse registrarCliente(ClienteRequest registroDTO) {
-        // --- 1. Crear y cifrar la Cuenta ---
-        Cuenta cuenta = new Cuenta();
-        cuenta.setUsuario(registroDTO.getUsuario());
-        // CRÍTICO: Cifrar la contraseña
-        cuenta.setContrasena(passwordEncoder.encode(registroDTO.getContrasena())); 
-        cuenta.setRol(Rol.CLIENTE);
-        
-        // --- 2. Crear la entidad Cliente y vincular la Cuenta ---
-        Cliente cliente = mapToEntity(registroDTO);
-        cliente.setCuenta(cuenta); // Vincular One-to-One
-        
-        // --- 3. Persistir ---
-        Cliente guardado = clienteRepository.save(cliente);
-        
-        // --- 4. Mapear a DTO de Respuesta ---
-        return mapToResponseDTO(guardado);
-    }
+    // ClienteImpl.java (Método registrarCliente CORREGIDO)
+@Transactional
+@Override
+public ClienteResponse registrarCliente(ClienteRequest registroDTO) {
+    // 1. Convertir el String Rol del DTO a la Enum Rol
+    // Esto asegura que si envían "ADMIN", se convierte a Rol.ADMIN.
+    // También manejará el caso de que la cadena sea inválida (lanzará una excepción, lo cual es bueno).
+    Rol rolAUsar = Rol.valueOf(registroDTO.getRol().toUpperCase()); 
 
+    // --- 2. Crear y cifrar la Cuenta ---
+    Cuenta cuenta = new Cuenta();
+    cuenta.setUsuario(registroDTO.getUsuario());
+    // CRÍTICO: Cifrar la contraseña
+    cuenta.setContrasena(passwordEncoder.encode(registroDTO.getContrasena())); 
+    
+    // 💥 CORRECCIÓN: USAR EL ROL DEL DTO 💥
+    cuenta.setRol(rolAUsar); 
+    
+    // --- 3. Crear la entidad Cliente y vincular la Cuenta ---
+    Cliente cliente = mapToEntity(registroDTO); // Asumimos que esta función ya fue corregida para incluir el email
+    cliente.setCuenta(cuenta); 
+    
+    // --- 4. Persistir ---
+    Cliente guardado = clienteRepository.save(cliente);
+    
+    // --- 5. Mapear a DTO de Respuesta ---
+    return mapToResponseDTO(guardado);
+}
     @Transactional(readOnly = true)
     @Override
     public ClienteResponse obtenerClientePorId(Long id) { // Nombre de método actualizado
@@ -71,19 +78,23 @@ public class ClienteImpl implements ClienteService { // Nombre de clase corregid
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+    
 
 
     // --- Métodos de Mapeo (Helpers) ---
-    private Cliente mapToEntity(ClienteRequest registroDTO) {
-        Cliente cliente = new Cliente();
-        cliente.setNombre(registroDTO.getNombre());
-        cliente.setApellido(registroDTO.getApellido());
-        cliente.setTelefono(registroDTO.getTelefono());
-        cliente.setDireccion(registroDTO.getDireccion());
-        // La cuenta se vincula en el método registrarCliente
-        return cliente;
-    }
+   // ClienteImpl.java (Método mapToEntity CORREGIDO)
+private Cliente mapToEntity(ClienteRequest registroDTO) {
+    Cliente cliente = new Cliente();
+    cliente.setNombre(registroDTO.getNombre());
+    cliente.setApellido(registroDTO.getApellido());
+    cliente.setTelefono(registroDTO.getTelefono());
+    cliente.setDireccion(registroDTO.getDireccion());
     
+    // 💥 ¡AÑADIR ESTO! 💥 
+    cliente.setEmail(registroDTO.getEmail()); 
+    
+    return cliente;
+}
     private ClienteResponse mapToResponseDTO(Cliente cliente) {
         if (cliente == null) return null;
         return new ClienteResponse(

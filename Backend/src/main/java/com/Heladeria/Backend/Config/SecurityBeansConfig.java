@@ -2,7 +2,8 @@
 
 package com.Heladeria.Backend.Config;
 
-import com.Heladeria.Backend.Security.JwtAuthenticationFilter; // ¡Importar tu filtro JWT!
+import java.util.Arrays; // ¡Importar tu filtro JWT!
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // Para añadir tu filtro
 import org.springframework.web.cors.CorsConfiguration; // Para CORS
-import java.util.Arrays;
+
+import com.Heladeria.Backend.Security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -53,10 +55,13 @@ public class SecurityBeansConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 // Permite tu frontend o localhost de desarrollo
-                config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:5500")); 
+               // SecurityBeansConfig.java (CORRECCIÓN FINAL DE CORS)
+
+// ...
+                config.setAllowedOriginPatterns(Arrays.asList("*")); // ¡USAR PATTERNS EN LUGAR DE ORIGINS!
                 config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(Arrays.asList("*"));
-                config.setAllowCredentials(true);
+                config.setAllowCredentials(true); // Permitido con setAllowedOriginPatterns 
                 return config;
             }))
             
@@ -81,8 +86,14 @@ public class SecurityBeansConfig {
                 // CRUD de Empleados (Solo ADMIN)
                 .requestMatchers("/api/empleados/**").hasRole("ADMIN")
 
-                // CRUD de Productos (Admin y Empleado pueden manejar inventario)
-                .requestMatchers("/api/productos/**").hasAnyRole("ADMIN", "EMPLEADO")
+                // 💥 CORRECCIÓN AQUÍ 💥
+    // 1. Permitir la LECTURA (GET) de productos a CUALQUIERA (permitAll)
+    .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll() 
+
+    // 2. Restringir la ESCRITURA/MODIFICACIÓN (POST, PUT, DELETE) a solo gestores
+    .requestMatchers(HttpMethod.POST, "/api/productos/**").hasAnyRole("ADMIN", "EMPLEADO")
+    .requestMatchers(HttpMethod.PUT, "/api/productos/**").hasAnyRole("ADMIN", "EMPLEADO")
+    .requestMatchers(HttpMethod.DELETE, "/api/productos/**").hasAnyRole("ADMIN", "EMPLEADO")
                 
                 // CRUD de Pedidos (Todos pueden hacer/ver sus pedidos)
                 .requestMatchers("/api/pedidos/**").authenticated() 

@@ -1,10 +1,14 @@
 package com.Heladeria.Backend.DTO;
 
 import com.Heladeria.Backend.model.Rol; // Importar la enum Rol
-import jakarta.validation.constraints.*;
-import lombok.Data; 
-import lombok.NoArgsConstructor;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data // Incluye getters, setters, y toString
 @NoArgsConstructor // Constructor vacío
@@ -54,4 +58,18 @@ public class EmpleadoRequest {
     public String getNombre() {
         return nombre;
     }
+    
+    public String getRol() {
+        return rol.name();
+    }
+    
+    public String getApellido() {
+        return apellido;
+    }
+
+     public String getTelefono() {
+        return telefono;
+    }
+
+
 }

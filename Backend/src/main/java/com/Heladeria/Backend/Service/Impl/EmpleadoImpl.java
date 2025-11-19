@@ -38,21 +38,23 @@ public class EmpleadoImpl implements EmpleadoService { // Implementa la interfaz
     public EmpleadoResponse registrarEmpleado(EmpleadoRequest registroDTO) { // Firma corregida
         
         // 1. Crear y cifrar la Cuenta
-        Cuenta cuenta = new Cuenta();
-        cuenta.setUsuario(registroDTO.getUsuario());
-        cuenta.setContrasena(passwordEncoder.encode(registroDTO.getContrasena())); 
-        // Nota: El primer empleado registrado podría recibir el Rol.ADMIN
-        cuenta.setRol(Rol.EMPLEADO);
-        
-        // 2. Crear la entidad Empleado y vincular la Cuenta
-        Empleado empleado = mapToEntity(registroDTO);
-        empleado.setCuenta(cuenta); 
-        
-        // 3. Persistir 
-        Empleado guardado = empleadoRepository.save(empleado);
-        
-        // 4. Mapear a DTO de Respuesta
-        return mapToResponseDTO(guardado);
+    Cuenta cuenta = new Cuenta();
+    cuenta.setUsuario(registroDTO.getUsuario());
+    cuenta.setContrasena(passwordEncoder.encode(registroDTO.getContrasena())); 
+
+    // 💥 CORRECCIÓN: USAR EL ROL DEL DTO DE ENTRADA 💥
+    Rol rolAUsar = Rol.valueOf(registroDTO.getRol()); // Asumiendo que EmpleadoRequest tiene getRol()
+    cuenta.setRol(rolAUsar); // <-- AHORA PUEDE SER ADMIN O EMPLEADO
+
+    // 2. Crear la entidad Empleado y vincular la Cuenta
+    Empleado empleado = mapToEntity(registroDTO); // Mapeo ahora es completo
+    empleado.setCuenta(cuenta); 
+
+    // 3. Persistir 
+    Empleado guardado = empleadoRepository.save(empleado);
+
+    // 4. Mapear a DTO de Respuesta
+    return mapToResponseDTO(guardado);
     }
 
     @Transactional(readOnly = true)
@@ -72,14 +74,18 @@ public class EmpleadoImpl implements EmpleadoService { // Implementa la interfaz
                 .collect(Collectors.toList());
     }
 
-    // --- Métodos de Mapeo (Helpers) ---
-    private Empleado mapToEntity(EmpleadoRequest registroDTO) {
-        Empleado empleado = new Empleado();
-        empleado.setNombre(registroDTO.getNombre());
-        // Agrega el mapeo para otros campos si existen en EmpleadoRegistroDTO (ej. Puesto, Salario)
-        return empleado;
-    }
+   // EmpleadoImpl.java (Método mapToEntity CORREGIDO)
+private Empleado mapToEntity(EmpleadoRequest registroDTO) {
+    Empleado empleado = new Empleado();
+    empleado.setNombre(registroDTO.getNombre());
+    empleado.setApellido(registroDTO.getApellido()); // <-- ¡AGREGAR ESTO!
+    empleado.setTelefono(registroDTO.getTelefono()); // <-- ¡AGREGAR ESTO!
     
+    // Si necesitas EMAIL en la entidad Empleado:
+    // empleado.setEmail(registroDTO.getEmail()); 
+    
+    return empleado;
+}
  private EmpleadoResponse mapToResponseDTO(Empleado empleado) {
     if (empleado == null) return null;
     
