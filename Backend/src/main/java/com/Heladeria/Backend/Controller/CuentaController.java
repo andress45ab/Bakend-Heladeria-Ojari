@@ -1,26 +1,27 @@
 package com.Heladeria.Backend.Controller;
 
-import com.Heladeria.Backend.DTO.ClienteRequest;
-import com.Heladeria.Backend.DTO.ClienteResponse;
-import com.Heladeria.Backend.Service.ClienteService;
-import com.Heladeria.Backend.DTO.CuentaResponse; // Tu CuentaResponse
-import com.Heladeria.Backend.DTO.LoginDTO; // Tu LoginDTO
-import com.Heladeria.Backend.Security.JwtTokenProvider; // Tu proveedor de JWT
-
-import jakarta.validation.Valid;
 import java.net.URI;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager; // ¡Necesitas esta!
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AuthenticationManager; // Tu CuentaResponse
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken; // Tu LoginDTO
+import org.springframework.security.core.Authentication; // Tu proveedor de JWT
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController; // ¡Necesitas esta!
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.Heladeria.Backend.DTO.ClienteRequest;
+import com.Heladeria.Backend.DTO.ClienteResponse;
+import com.Heladeria.Backend.DTO.CuentaResponse;
+import com.Heladeria.Backend.DTO.LoginDTO;
+import com.Heladeria.Backend.Security.JwtTokenProvider;
+import com.Heladeria.Backend.Service.ClienteService;
+
+import jakarta.validation.Valid;
 
 
 @RestController
